@@ -4,6 +4,7 @@ Priority: extra
 Maintainer: Merlijn Wajer <merlijn@wizzup.org>
 Build-Depends:
  debhelper (>= 10),
+ libdrm-dev,
 Standards-Version: 4.3.0
 Vcs-Git: https://github.com/maemo-leste/sgx-ddk-um
 
