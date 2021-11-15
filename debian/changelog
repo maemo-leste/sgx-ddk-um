@@ -1,0 +1,5 @@
+sgx-ddk-um (1.17.4948957-leste1) unstable; urgency=medium
+
+  * Initial import from 742cf38aba13e1ba1a910cf1f036a1a212c263b6
+
+ -- Merlijn Wajer <merlijn@wizzup.org>  Mon, 15 Nov 2021 23:21:09 +0100

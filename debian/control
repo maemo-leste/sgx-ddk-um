@@ -1,0 +1,26 @@
+Source: sgx-ddk-um
+Section: graphics
+Priority: extra
+Maintainer: Merlijn Wajer <merlijn@wizzup.org>
+Build-Depends:
+ debhelper (>= 10),
+Standards-Version: 4.3.0
+Vcs-Git: https://github.com/maemo-leste/sgx-ddk-um
+
+Package: sgx-ddk-um-ti343x
+Architecture: armhf
+Depends: ${misc:Depends}
+Conflicts: sgx-ddk-um-ti443x
+Description: SGX DDK user mode libraries for ti343x
+
+Package: sgx-ddk-um-ti443x
+Architecture: armhf
+Depends: ${misc:Depends}
+Conflicts: sgx-ddk-um-ti343x
+Description: SGX DDK user mode libraries for ti443x
+
+Package: sgx-ddk-um-dev
+Architecture: armhf
+Depends: ${misc:Depends}
+Description: Development headers for PVR
+

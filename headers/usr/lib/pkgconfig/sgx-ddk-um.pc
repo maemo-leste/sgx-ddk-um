@@ -1,0 +1,12 @@
+prefix=/usr
+libdir=${prefix}/lib/arm-linux-gnueabihf
+sharedlibdir=${libdir}
+includedir=${prefix}/include
+
+Name: sgx-ddk-um
+Description: SGX DDK usermode libraries
+Version: 1.17.4948957
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lsrv_um -lpvr2d
+Cflags: -I${includedir}/pvrsgx -I${includedir}/pvrsgx/include4 -I${includedir}/pvrsgx/hwdefs
