@@ -11,12 +11,14 @@ Vcs-Git: https://github.com/maemo-leste/sgx-ddk-um
 Package: sgx-ddk-um-ti343x
 Architecture: armhf
 Depends: ${misc:Depends}, libdrm2
+Provides: sgx-ddk-um-libs
 Conflicts: sgx-ddk-um-ti443x
 Description: SGX DDK user mode libraries for ti343x
 
 Package: sgx-ddk-um-ti443x
 Architecture: armhf
 Depends: ${misc:Depends}, libdrm2
+Provides: sgx-ddk-um-libs
 Conflicts: sgx-ddk-um-ti343x
 Description: SGX DDK user mode libraries for ti443x
 
