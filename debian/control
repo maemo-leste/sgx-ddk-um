@@ -24,6 +24,7 @@ Description: SGX DDK user mode libraries for ti443x
 
 Package: sgx-ddk-um-dev
 Architecture: armhf
+Provides: sgx-ddk-um-dev-1.17.4948957
 Depends: ${misc:Depends}
 Description: Development headers for PVR
 
