@@ -3,7 +3,7 @@ Section: graphics
 Priority: extra
 Maintainer: Merlijn Wajer <merlijn@wizzup.org>
 Build-Depends:
- debhelper (>= 10),
+ debhelper-compat (= 12),
  libdrm-dev,
 Standards-Version: 4.3.0
 Vcs-Git: https://github.com/maemo-leste/sgx-ddk-um
@@ -12,19 +12,32 @@ Package: sgx-ddk-um-ti343x
 Architecture: armhf
 Depends: ${misc:Depends}, libdrm2
 Provides: sgx-ddk-um-libs
-Conflicts: sgx-ddk-um-ti443x
+Conflicts:
+ sgx-ddk-um-ti443x,
+ pvr-omap4,
+ pvr-omap4-libs,
+Replaces:
+ pvr-omap4,
+ pvr-omap4-libs,
 Description: SGX DDK user mode libraries for ti343x
 
 Package: sgx-ddk-um-ti443x
 Architecture: armhf
 Depends: ${misc:Depends}, libdrm2
 Provides: sgx-ddk-um-libs
-Conflicts: sgx-ddk-um-ti343x
+Conflicts:
+ sgx-ddk-um-ti343x,
+ pvr-omap4,
+ pvr-omap4-libs,
 Description: SGX DDK user mode libraries for ti443x
 
 Package: sgx-ddk-um-dev
 Architecture: armhf
 Provides: sgx-ddk-um-dev-1.17.4948957
+Conflicts: pvr-omap4-dev
+Replaces: pvr-omap4-dev
 Depends: ${misc:Depends}, sgx-ddk-um-libs
 Description: Development headers for PVR
 
+# TODO for sgx-ddk-um-utils
+# Conflict/Replace: pvr-omap4-utils
