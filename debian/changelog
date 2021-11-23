@@ -1,3 +1,14 @@
+sgx-ddk-um (1.17.4948957+leste3) unstable; urgency=medium
+
+  * Install initscript with tools.
+  * debian: shlibs:Depends on tools.
+  * Update makefile to install pvrsrvinit.
+  * Modify powervr initscript to be installed properly in sysinit.
+  * Add pvrsrvinit code.
+  * debian: Add conflicts for pvr-omap4-utils.
+
+ -- Ivan J. <parazyd@dyne.org>  Tue, 23 Nov 2021 11:18:58 +0100
+
 sgx-ddk-um (1.17.4948957-leste2) unstable; urgency=medium
 
   * Add glibc weakened libgslscompiler
