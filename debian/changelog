@@ -1,3 +1,9 @@
+sgx-ddk-um (1.17.4948957+leste4) unstable; urgency=medium
+
+  * pvrsrvinit: Use version for symbol loading.
+
+ -- Ivan J. <parazyd@dyne.org>  Tue, 23 Nov 2021 11:58:07 +0100
+
 sgx-ddk-um (1.17.4948957+leste3) unstable; urgency=medium
 
   * Install initscript with tools.
