@@ -25,11 +25,13 @@ Conflicts:
  pvr-omap4,
  pvr-omap4-libs,
  pvr-omap4-utils,
+ libegl1-sgx-omap4,
  libgles1-sgx-omap4,
 Replaces:
  pvr-omap4,
  pvr-omap4-libs,
  pvr-omap4-utils,
+ libegl1-sgx-omap4,
  libgles1-sgx-omap4,
 Description: SGX DDK user mode libraries for ti443x
 
