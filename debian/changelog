@@ -1,4 +1,4 @@
-sgx-ddk-um (1.17.4948957+leste4) unstable; urgency=medium
+sgx-ddk-um (1.17.4948957+leste4-1) unstable; urgency=medium
 
   * pvrsrvinit: Use version for symbol loading.
 
