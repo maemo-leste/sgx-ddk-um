@@ -1,1 +1,2 @@
 etc/profile.d/mesa.sh
+usr/bin/pvrsrvinit
