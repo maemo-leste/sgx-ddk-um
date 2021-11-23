@@ -14,13 +14,6 @@ Depends: ${misc:Depends}, libdrm2
 Provides: sgx-ddk-um-libs
 Conflicts:
  sgx-ddk-um-ti443x,
- pvr-omap4,
- pvr-omap4-libs,
- pvr-omap4-utils,
-Replaces:
- pvr-omap4,
- pvr-omap4-libs,
- pvr-omap4-utils,
 Description: SGX DDK user mode libraries for ti343x
 
 Package: sgx-ddk-um-ti443x
@@ -32,10 +25,12 @@ Conflicts:
  pvr-omap4,
  pvr-omap4-libs,
  pvr-omap4-utils,
+ libgles1-sgx-omap4,
 Replaces:
  pvr-omap4,
  pvr-omap4-libs,
  pvr-omap4-utils,
+ libgles1-sgx-omap4,
 Description: SGX DDK user mode libraries for ti443x
 
 Package: sgx-ddk-um-tools
