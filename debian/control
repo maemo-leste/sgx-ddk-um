@@ -16,9 +16,11 @@ Conflicts:
  sgx-ddk-um-ti443x,
  pvr-omap4,
  pvr-omap4-libs,
+ pvr-omap4-utils,
 Replaces:
  pvr-omap4,
  pvr-omap4-libs,
+ pvr-omap4-utils,
 Description: SGX DDK user mode libraries for ti343x
 
 Package: sgx-ddk-um-ti443x
@@ -29,6 +31,11 @@ Conflicts:
  sgx-ddk-um-ti343x,
  pvr-omap4,
  pvr-omap4-libs,
+ pvr-omap4-utils,
+Replaces:
+ pvr-omap4,
+ pvr-omap4-libs,
+ pvr-omap4-utils,
 Description: SGX DDK user mode libraries for ti443x
 
 Package: sgx-ddk-um-tools
@@ -44,6 +51,3 @@ Conflicts: pvr-omap4-dev
 Replaces: pvr-omap4-dev
 Depends: ${misc:Depends}, sgx-ddk-um-libs
 Description: Development headers for PVR
-
-# TODO for sgx-ddk-um-utils
-# Conflict/Replace: pvr-omap4-utils
