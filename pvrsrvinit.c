@@ -6,7 +6,7 @@ int main(void)
 	int ret;
 	int (*SrvInit)(void);
 
-	void *handle = dlopen("libsrv_init.so", RTLD_LAZY);
+	void *handle = dlopen("libsrv_init.so.1", RTLD_LAZY);
 	if (!handle) {
 		fprintf(stderr, "failed to open libsrv_init.so\n");
 		return -1;
