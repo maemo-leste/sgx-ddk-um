@@ -1,3 +1,9 @@
+sgx-ddk-um (1.17.4948957+leste6-1) unstable; urgency=medium
+
+  * Attempt at upgrading
+
+ -- Merlijn Wajer <merlijn@wizzup.org>  Mon, 29 Nov 2021 01:46:23 +0100
+
 sgx-ddk-um (1.17.4948957+leste5-1) unstable; urgency=medium
 
   * Move package from native to quilt.
