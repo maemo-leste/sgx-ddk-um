@@ -1,6 +1,6 @@
 Source: sgx-ddk-um
 Section: graphics
-Priority: important
+Priority: optional
 Maintainer: Merlijn Wajer <merlijn@wizzup.org>
 Build-Depends:
  debhelper (>= 10),
@@ -9,7 +9,6 @@ Standards-Version: 4.3.0
 Vcs-Git: https://github.com/maemo-leste/sgx-ddk-um
 
 Package: sgx-ddk-um-ti343x
-Priority: important
 Architecture: armhf
 Depends: ${misc:Depends}, libdrm2
 Provides: sgx-ddk-um-libs
@@ -18,7 +17,6 @@ Conflicts:
 Description: SGX DDK user mode libraries for ti343x
 
 Package: sgx-ddk-um-ti443x
-Priority: important
 Architecture: armhf
 Depends: ${misc:Depends}, libdrm2
 Provides: sgx-ddk-um-libs
@@ -38,7 +36,6 @@ Replaces:
 Description: SGX DDK user mode libraries for ti443x
 
 Package: sgx-ddk-um-tools
-Priority: important
 Architecture: armhf
 Depends:
  ${shlibs:Depends},
