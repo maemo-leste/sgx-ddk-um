@@ -1,3 +1,9 @@
+sgx-ddk-um (1.17.4948957+leste8-1) unstable; urgency=medium
+
+  * Add priority standard
+
+ -- Merlijn Wajer <merlijn@wizzup.org>  Tue, 30 Nov 2021 17:54:04 +0100
+
 sgx-ddk-um (1.17.4948957+leste7-1) unstable; urgency=medium
 
   * Attempt to clean up working upgrade path
