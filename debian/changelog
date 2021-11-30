@@ -1,3 +1,9 @@
+sgx-ddk-um (1.17.4948957+leste7-1) unstable; urgency=medium
+
+  * Attempt to clean up working upgrade path
+
+ -- Merlijn Wajer <merlijn@wizzup.org>  Tue, 30 Nov 2021 15:10:19 +0100
+
 sgx-ddk-um (1.17.4948957+leste6-1) unstable; urgency=medium
 
   * Attempt at upgrading
