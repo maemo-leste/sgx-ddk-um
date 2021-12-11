@@ -21,7 +21,6 @@ Package: sgx-ddk-um-ti443x
 Priority: important
 Architecture: armhf
 Depends: ${misc:Depends}, libdrm2
-Provides: sgx-ddk-um-libs
 Conflicts:
  sgx-ddk-um-ti343x,
  pvr-omap4,
@@ -30,6 +29,13 @@ Conflicts:
  libegl1-sgx-omap4,
  libgles1-sgx-omap4,
 Replaces:
+ pvr-omap4,
+ pvr-omap4-libs,
+ pvr-omap4-utils,
+ libegl1-sgx-omap4,
+ libgles1-sgx-omap4,
+Provides:
+ sgx-ddk-um-libs,
  pvr-omap4,
  pvr-omap4-libs,
  pvr-omap4-utils,
