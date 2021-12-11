@@ -20,7 +20,8 @@ Description: SGX DDK user mode libraries for ti343x
 Package: sgx-ddk-um-ti443x
 Priority: important
 Architecture: armhf
-Depends: ${misc:Depends}, libdrm2
+Depends: ${misc:Depends}, libdrm2,
+ linux-image-droid4 (>= 5.15)
 Conflicts:
  sgx-ddk-um-ti343x,
  pvr-omap4,
