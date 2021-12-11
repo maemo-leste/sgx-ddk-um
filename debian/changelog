@@ -1,8 +1,8 @@
-sgx-ddk-um (1.17.4948957+leste9-1) unstable; urgency=medium
+sgx-ddk-um (1.17.4948957+leste10-1) unstable; urgency=medium
 
-  * Attempt at upgrading, with some reverts
+  * Another attempt
 
- -- Merlijn Wajer <merlijn@wizzup.org>  Tue, 30 Nov 2021 18:07:23 +0100
+ -- Merlijn Wajer <merlijn@wizzup.org>  Sat, 11 Dec 2021 16:24:43 +0100
 
 sgx-ddk-um (1.17.4948957+leste6-1) unstable; urgency=medium
 
