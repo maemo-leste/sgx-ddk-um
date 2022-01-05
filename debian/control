@@ -12,6 +12,7 @@ Package: sgx-ddk-um-ti343x
 Priority: important
 Architecture: armhf
 Depends: ${misc:Depends}, libdrm2
+ linux-image-omap (>= 5.15)
 Provides: sgx-ddk-um-libs
 Conflicts:
  sgx-ddk-um-ti443x,
@@ -21,7 +22,7 @@ Package: sgx-ddk-um-ti443x
 Priority: important
 Architecture: armhf
 Depends: ${misc:Depends}, libdrm2,
- linux-image-droid4 (>= 5.15)
+ linux-image-omap (>= 5.15)
 Conflicts:
  sgx-ddk-um-ti343x,
  pvr-omap4,
