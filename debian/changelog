@@ -1,3 +1,9 @@
+sgx-ddk-um (1.17.4948957+leste11-1) unstable; urgency=medium
+
+  * Depend on linux-image-omap
+
+ -- Merlijn Wajer <merlijn@wizzup.org>  Wed, 05 Jan 2022 12:02:57 +0100
+
 sgx-ddk-um (1.17.4948957+leste10-1) unstable; urgency=medium
 
   * Another attempt
