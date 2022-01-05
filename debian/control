@@ -11,7 +11,7 @@ Vcs-Git: https://github.com/maemo-leste/sgx-ddk-um
 Package: sgx-ddk-um-ti343x
 Priority: important
 Architecture: armhf
-Depends: ${misc:Depends}, libdrm2
+Depends: ${misc:Depends}, libdrm2,
  linux-image-omap (>= 5.15)
 Provides: sgx-ddk-um-libs
 Conflicts:
