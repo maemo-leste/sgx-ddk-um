@@ -11,18 +11,18 @@ Vcs-Git: https://github.com/maemo-leste/sgx-ddk-um
 Package: sgx-ddk-um-ti343x
 Priority: important
 Architecture: armhf
-Depends: ${misc:Depends}, libdrm2,
- linux-image-omap (>= 5.15)
+Depends: ${misc:Depends}, libdrm2
 Provides: sgx-ddk-um-libs
 Conflicts:
  sgx-ddk-um-ti443x,
+ linux-image-n900 (<< 5.15.0),
+ ti-omap3-sgx
 Description: SGX DDK user mode libraries for ti343x
 
 Package: sgx-ddk-um-ti443x
 Priority: important
 Architecture: armhf
-Depends: ${misc:Depends}, libdrm2,
- linux-image-omap (>= 5.15)
+Depends: ${misc:Depends}, libdrm2
 Conflicts:
  sgx-ddk-um-ti343x,
  pvr-omap4,
@@ -30,6 +30,7 @@ Conflicts:
  pvr-omap4-utils,
  libegl1-sgx-omap4,
  libgles1-sgx-omap4,
+ linux-image-droid4 (<< 5.15.0)
 Replaces:
  pvr-omap4,
  pvr-omap4-libs,
