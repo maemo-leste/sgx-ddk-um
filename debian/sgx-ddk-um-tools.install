@@ -1,3 +1,2 @@
 etc/profile.d/mesa.sh
-etc/init.d/powervr
 usr/bin/pvrsrvinit
