@@ -30,7 +30,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#define DEBUG_TRACE
+/* #define DEBUG_TRACE */
 
 #ifdef DEBUG_TRACE
 #include <stdio.h>
@@ -583,7 +583,7 @@ dbm_device_destroy(dbm_device *dev)
 }
 
 int
-_dbm_bpp_from_pixel_format(int fourcc)
+dbm_bpp_from_pixel_format(int fourcc)
 {
   switch (fourcc)
   {
