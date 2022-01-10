@@ -2,6 +2,9 @@
 
 # export DH_VERBOSE=1
 
+CFLAGS += -Wall -Werror
+export CFLAGS
+
 %:
 	dh $@ --with autoreconf
 

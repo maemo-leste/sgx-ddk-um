@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
-SUBDIRS = pvrsrvinit
+SUBDIRS = pvrsrvinit dbm
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 ./build-aux/* config.h.in \
                        config.h.in~ configure ./m4/*
 
