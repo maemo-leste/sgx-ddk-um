@@ -87,8 +87,7 @@ struct _dbm_device
   dbm_format *formats;
   dbm_device_functions *funcs;
   pthread_mutex_t mutex;
-  uint32_t num_handles;
-  int *handle_ref;
+  void *handle_ref;
 };
 
 #include "dbm_helpers.h"

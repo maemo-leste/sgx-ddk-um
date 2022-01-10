@@ -53,6 +53,7 @@ handle_lock(dbm_device *dev)
 {
   int err = pthread_mutex_lock(&dev->mutex);
 
+  TRACE("%s %p\n", __func__, (void *)&dev->mutex);
   assert(!err);
 }
 
@@ -60,7 +61,7 @@ inline static void
 handle_unlock(dbm_device *dev)
 {
   int err = pthread_mutex_unlock(&dev->mutex);
-
+  TRACE("%s %p\n", __func__, (void *)&dev->mutex);
   assert(!err);
 }
 
@@ -115,30 +116,15 @@ static dbm_buffer_functions buffer_functions =
 static int
 buffer_init(dbm_device *dev, int handle, uint32_t size, dbm_buffer **buf)
 {
-  uint32_t num_handles = handle + 1;
   dbm_buffer *new_buf = NULL;
   int err;
 
   TRACE("%s size %d\n", __func__, size);
 
-  if (num_handles > dev->num_handles)
-  {
-    void *ptr = realloc(dev->handle_ref,
-                        num_handles * sizeof(dev->handle_ref[0]));
-    if (!ptr)
-    {
-      struct drm_gem_close close_req;
+  err = handle_reference(dev, handle);
 
-      close_req.handle = handle;
-      drmIoctl(dev->fd, DRM_IOCTL_GEM_CLOSE, &close_req);
-      return -ENOMEM;
-    }
-
-    dev->handle_ref = ptr;
-    dev->handle_ref[handle] = 0;
-  }
-
-  dev->handle_ref[handle]++;
+  if (err)
+    return err;
 
   err = dev->funcs->buffer_create_from_handle(dev, handle, size, &new_buf);
 
@@ -254,7 +240,7 @@ void
 dbm_buffer_destroy(dbm_buffer *buf)
 {
   assert(!buf->ptr);
-
+  dbm_device *dev = buf->dev;
   TRACE("%s\n", __func__);
 
   if (buf->closure)
@@ -264,9 +250,9 @@ dbm_buffer_destroy(dbm_buffer *buf)
     buf->closure = NULL;
   }
 
-  handle_lock(buf->dev);
+  handle_lock(dev);
   buf->funcs->destroy(buf);
-  handle_unlock(buf->dev);
+  handle_unlock(dev);
 }
 
 void *
@@ -573,8 +559,7 @@ dbm_device_create(int fd)
          dev->funcs->destroy && dev->funcs->get_buffer_stride_and_size &&
          dev->funcs->buffer_create && dev->funcs->buffer_create_from_handle);
 
-  dev->num_handles = 0;
-  dev->handle_ref = NULL;
+  dev->handle_ref = drmHashCreate();
   err = pthread_mutex_init(&dev->mutex, NULL);
 
   if (err)
@@ -590,8 +575,10 @@ dbm_device_create(int fd)
 void
 dbm_device_destroy(dbm_device *dev)
 {
+  TRACE("%s\n", __func__);
+
   pthread_mutex_destroy(&dev->mutex);
-  free(dev->handle_ref);
+  drmHashDestroy(dev->handle_ref);
   dev->funcs->destroy(dev);
 }
 

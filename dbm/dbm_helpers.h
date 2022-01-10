@@ -25,4 +25,7 @@
 int
 handle_unreference(dbm_device *dev, uint32_t handle);
 
+int
+handle_reference(dbm_device *dev, uint32_t handle);
+
 #endif /* __DBM_HELPERS_H__ */

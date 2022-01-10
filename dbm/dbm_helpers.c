@@ -19,25 +19,71 @@
 
 #include <xf86drm.h>
 #include <assert.h>
+#include <stdlib.h>
+#include <errno.h>
 
 #include "dbm_helpers.h"
 
 int
 handle_unreference(dbm_device *dev, uint32_t handle)
 {
+  uint32_t *ref;
   struct drm_gem_close close_req =
   {
     .handle = handle,
   };
 
-  assert(handle < dev->num_handles);
+  assert(drmHashLookup(dev->handle_ref, handle, (void *)&ref) == 0);
+  assert(*ref > 0);
 
-  assert(dev->handle_ref[handle] > 0);
+  (*ref)--;
 
-  dev->handle_ref[handle]--;
-
-  if (dev->handle_ref[handle])
+  if (*ref)
     return 0;
 
+  free(ref);
+  drmHashDelete(dev->handle_ref, handle);
+
   return drmIoctl(dev->fd, DRM_IOCTL_GEM_CLOSE, &close_req);
+}
+
+int
+handle_reference(dbm_device *dev, uint32_t handle)
+{
+  uint32_t *ref;
+  int err = drmHashLookup(dev->handle_ref, handle, (void *)&ref);
+
+  if (err == 1)
+  {
+    err = 0;
+    ref = malloc(sizeof(*ref));
+
+    if (!ref)
+      err = -ENOMEM;
+    else
+    {
+      *ref = 0;
+
+      if (drmHashInsert(dev->handle_ref, handle, ref) != 0)
+      {
+        free(ref);
+        err = -ENOMEM;
+      }
+    }
+  }
+  else if (err == -1)
+    err = -EINVAL;
+
+  if (!err)
+    (*ref)++;
+  else
+  {
+    struct drm_gem_close close_req;
+
+    close_req.handle = handle;
+    drmIoctl(dev->fd, DRM_IOCTL_GEM_CLOSE, &close_req);
+
+  }
+
+  return err;
 }
