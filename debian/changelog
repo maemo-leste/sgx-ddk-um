@@ -1,3 +1,9 @@
+sgx-ddk-um (1.17.4948957+leste12-1) unstable; urgency=medium
+
+  * Weaking libGLESv1 symbols
+
+ -- Merlijn Wajer <merlijn@wizzup.org>  Mon, 14 Feb 2022 12:56:11 +0100
+
 sgx-ddk-um (1.17.4948957+leste11-1) unstable; urgency=medium
 
   * Depend on linux-image-omap
