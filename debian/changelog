@@ -1,3 +1,9 @@
+sgx-ddk-um (1.17.4948957+leste13-1) unstable; urgency=medium
+
+  * Add missing build-deps
+
+ -- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>  Wed, 16 Feb 2022 19:16:11 +0200
+
 sgx-ddk-um (1.17.4948957+leste12-1) unstable; urgency=medium
 
   * Weaking libGLESv1 symbols
