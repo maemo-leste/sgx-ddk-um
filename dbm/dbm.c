@@ -320,9 +320,12 @@ dbm_buffer_get_name(dbm_buffer *buf)
 int
 dbm_buffer_get_fd(dbm_buffer *buf)
 {
-  int prime_fd;
+  int prime_fd, fd = buf->dev->fd;
 
-  if (drmPrimeHandleToFD(buf->dev->fd, buf->handle, DRM_CLOEXEC, &prime_fd))
+  if (drmGetNodeTypeFromFd(fd) != DRM_NODE_PRIMARY)
+    fd = buf->dev->drm_fd;
+
+  if (drmPrimeHandleToFD(fd, buf->handle, DRM_CLOEXEC, &prime_fd))
     prime_fd = -1;
 
   return prime_fd;
@@ -421,6 +424,8 @@ static int
 buffer_create(dbm_device *dev, uint32_t size, uint32_t flags, dbm_buffer **buf)
 {
   struct drm_mode_create_dumb create_dumb_req;
+  const char *name;
+  int fd = dev->fd;
 
   TRACE("%s size %d, flags %x\n", __func__, size, flags);
 
@@ -429,7 +434,10 @@ buffer_create(dbm_device *dev, uint32_t size, uint32_t flags, dbm_buffer **buf)
   create_dumb_req.width = 1;
   create_dumb_req.bpp = 8;
 
-  if (drmIoctl(dev->fd, DRM_IOCTL_MODE_CREATE_DUMB, &create_dumb_req))
+  if (drmGetNodeTypeFromFd(fd) != DRM_NODE_PRIMARY)
+    fd = dev->drm_fd;
+
+  if (drmIoctl(fd, DRM_IOCTL_MODE_CREATE_DUMB, &create_dumb_req))
     return -errno;
 
   return buffer_init(dev, create_dumb_req.handle, size, buf);
@@ -527,6 +535,7 @@ dbm_device_create(int fd)
 {
   drmVersionPtr ver = drmGetVersion(fd);
   dbm_device *dev = NULL;
+  const char *name;
   int err;
 
   TRACE("%s\n", __func__);
@@ -555,6 +564,18 @@ dbm_device_create(int fd)
     return NULL;
   }
 
+  /*
+   * Render nodes cannot be used for privileged operations.
+   * We must always also open the primary DRM device, it is
+   * closed on dbm_device_destroy.
+   */
+  name = drmGetPrimaryDeviceNameFromFd(fd);
+  dev->drm_fd = open(name, O_RDWR | O_CLOEXEC);
+  if (dev->drm_fd < 0) {
+    errno = dev->drm_fd;
+    goto out_err;
+  }
+
   assert(dev && dev->format_count && dev->formats && dev->funcs &&
          dev->funcs->destroy && dev->funcs->get_buffer_stride_and_size &&
          dev->funcs->buffer_create && dev->funcs->buffer_create_from_handle);
@@ -562,6 +583,7 @@ dbm_device_create(int fd)
   dev->handle_ref = drmHashCreate();
   err = pthread_mutex_init(&dev->mutex, NULL);
 
+out_err:
   if (err)
   {
     dev->funcs->destroy(dev);
@@ -577,6 +599,7 @@ dbm_device_destroy(dbm_device *dev)
 {
   TRACE("%s\n", __func__);
 
+  close(dev->drm_fd);
   pthread_mutex_destroy(&dev->mutex);
   drmHashDestroy(dev->handle_ref);
   dev->funcs->destroy(dev);

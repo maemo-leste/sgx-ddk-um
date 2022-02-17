@@ -88,6 +88,9 @@ struct _dbm_device
   dbm_device_functions *funcs;
   pthread_mutex_t mutex;
   void *handle_ref;
+
+  /* Add new entries here for binary blob compability */
+  int drm_fd;
 };
 
 #include "dbm_helpers.h"
