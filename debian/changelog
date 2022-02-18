@@ -1,3 +1,9 @@
+sgx-ddk-um (1.17.4948957+leste14-1) unstable; urgency=medium
+
+  * use REed libdbm instead of a blob
+
+ -- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>  Fri, 18 Feb 2022 12:46:32 +0200
+
 sgx-ddk-um (1.17.4948957+leste13-1) unstable; urgency=medium
 
   * Add missing build-deps
