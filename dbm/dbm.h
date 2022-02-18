@@ -33,7 +33,7 @@ typedef struct _dbm_buffer dbm_buffer;
 typedef struct
 {
   int (*cpu_access_prepare)(dbm_buffer *buf);
-  void (*cpu_access_finish)(dbm_buffer *buf, bool, bool);
+  void (*cpu_access_finish)(dbm_buffer *buf, uint32_t, uint32_t);
   void (*destroy)(dbm_buffer *buf);
 } dbm_buffer_functions;
 
@@ -45,8 +45,8 @@ struct _dbm_buffer
   uint32_t size;
   uint32_t name;
   void *ptr;
-  bool flag1;
-  bool flag2;
+  uint32_t unk1;
+  uint32_t unk2;
   void *user_data;
   void (*closure)(void *);
 };

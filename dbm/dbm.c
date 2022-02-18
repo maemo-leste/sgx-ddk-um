@@ -98,7 +98,7 @@ buffer_cpu_access_prepare(dbm_buffer *buf)
 }
 
 static void
-buffer_cpu_access_finish(dbm_buffer *buf, bool flag1, bool flag2)
+buffer_cpu_access_finish(dbm_buffer *buf, uint32_t unk1, uint32_t unk2)
 {
   munmap(buf->ptr, buf->size);
   buf->ptr = NULL;
@@ -262,7 +262,7 @@ dbm_buffer_destroy(dbm_buffer *buf)
 }
 
 void *
-dbm_buffer_cpu_access_prepare(dbm_buffer *buf, bool flag1, bool flag2)
+dbm_buffer_cpu_access_prepare(dbm_buffer *buf, uint32_t unk1, uint32_t unk2)
 {
   int err;
 
@@ -283,8 +283,9 @@ dbm_buffer_cpu_access_prepare(dbm_buffer *buf, bool flag1, bool flag2)
 
   assert(buf->ptr);
 
-  buf->flag1 = flag1;
-  buf->flag2 = flag2;
+  /* this looks like remnants of some old DDK version API*/
+  buf->unk1 = unk1;
+  buf->unk2 = unk2;
 
   return buf->ptr;
 }
@@ -294,7 +295,7 @@ dbm_buffer_cpu_access_finish(dbm_buffer *buf)
 {
   if (buf->ptr)
   {
-    buf->funcs->cpu_access_finish(buf, buf->flag1, buf->flag2);
+    buf->funcs->cpu_access_finish(buf, buf->unk1, buf->unk2);
     assert(!buf->ptr);
   }
 }
