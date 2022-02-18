@@ -1,2 +1,3 @@
 ti443x/usr/lib/* usr/lib/arm-linux-gnueabihf/
 ti443x/usr/bin/* usr/bin
+usr/lib/*/*.so*

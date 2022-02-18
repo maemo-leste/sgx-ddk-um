@@ -1,2 +1,3 @@
 ti343x/usr/lib/* usr/lib/arm-linux-gnueabihf/
 ti343x/usr/bin/* usr/bin
+usr/lib/*/*.so*
