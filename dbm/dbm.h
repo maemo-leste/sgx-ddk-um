@@ -61,7 +61,7 @@ typedef struct
 
 typedef struct
 {
-  void (*destroy)();
+  void (*free)();
   int (*get_buffer_stride_and_size)(dbm_device *dev,
                                     uint32_t bpp,
                                     uint32_t width,
@@ -84,13 +84,12 @@ struct _dbm_device
 {
   int fd;
   uint32_t format_count;
-  dbm_format *formats;
+  const dbm_format *formats;
   dbm_device_functions *funcs;
   pthread_mutex_t mutex;
   void *handle_ref;
-
-  /* Add new entries here for binary blob compability */
   int drm_fd;
+  bool fd_is_primary;
 };
 
 #include "dbm_helpers.h"

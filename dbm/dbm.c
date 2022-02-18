@@ -42,8 +42,8 @@
 #include "dbm.h"
 
 
-static inline
-uint32_t align(uint32_t v, int a)
+inline static uint32_t
+align(uint32_t v, int a)
 {
   return (v + (a - 1)) & ~(a - 1);
 }
@@ -63,6 +63,12 @@ handle_unlock(dbm_device *dev)
   int err = pthread_mutex_unlock(&dev->mutex);
   TRACE("%s %p\n", __func__, (void *)&dev->mutex);
   assert(!err);
+}
+
+inline static int
+get_primary_fd(dbm_device *dev)
+{
+  return dev->fd_is_primary ? dev->fd : dev->drm_fd;
 }
 
 /* dbm_buffer implemantation */
@@ -320,10 +326,8 @@ dbm_buffer_get_name(dbm_buffer *buf)
 int
 dbm_buffer_get_fd(dbm_buffer *buf)
 {
-  int prime_fd, fd = buf->dev->fd;
-
-  if (drmGetNodeTypeFromFd(fd) != DRM_NODE_PRIMARY)
-    fd = buf->dev->drm_fd;
+  int prime_fd;
+  int fd = get_primary_fd(buf->dev);
 
   if (drmPrimeHandleToFD(fd, buf->handle, DRM_CLOEXEC, &prime_fd))
     prime_fd = -1;
@@ -393,7 +397,7 @@ dbm_is_format_and_layout_supported(dbm_device *dev, uint32_t fourcc,
 
   for (i = 0; i < dev->format_count; i++)
   {
-    dbm_format *fmt = &dev->formats[i];
+    const dbm_format *fmt = &dev->formats[i];
 
     if (fmt->fourcc == fourcc && fmt->format == format &&
         !(flags & ~fmt->allowed_flags))
@@ -424,8 +428,7 @@ static int
 buffer_create(dbm_device *dev, uint32_t size, uint32_t flags, dbm_buffer **buf)
 {
   struct drm_mode_create_dumb create_dumb_req;
-  const char *name;
-  int fd = dev->fd;
+  int fd = get_primary_fd(dev);
 
   TRACE("%s size %d, flags %x\n", __func__, size, flags);
 
@@ -433,9 +436,6 @@ buffer_create(dbm_device *dev, uint32_t size, uint32_t flags, dbm_buffer **buf)
   create_dumb_req.height = size;
   create_dumb_req.width = 1;
   create_dumb_req.bpp = 8;
-
-  if (drmGetNodeTypeFromFd(fd) != DRM_NODE_PRIMARY)
-    fd = dev->drm_fd;
 
   if (drmIoctl(fd, DRM_IOCTL_MODE_CREATE_DUMB, &create_dumb_req))
     return -errno;
@@ -466,13 +466,13 @@ buffer_create_from_handle(dbm_device *dev, uint32_t handle, uint32_t size,
 
 static dbm_device_functions device_functions =
 {
-  .destroy = free,
+  .free = free,
   .get_buffer_stride_and_size = get_buffer_stride_and_size,
   .buffer_create = buffer_create,
   .buffer_create_from_handle = buffer_create_from_handle
 };
 
-dbm_format formats[4] =
+static const dbm_format formats[] =
 {
   {
     GBM_FORMAT_ARGB8888,
@@ -535,7 +535,6 @@ dbm_device_create(int fd)
 {
   drmVersionPtr ver = drmGetVersion(fd);
   dbm_device *dev = NULL;
-  const char *name;
   int err;
 
   TRACE("%s\n", __func__);
@@ -564,29 +563,44 @@ dbm_device_create(int fd)
     return NULL;
   }
 
+  assert(dev && dev->format_count && dev->formats && dev->funcs &&
+         dev->funcs->free && dev->funcs->get_buffer_stride_and_size &&
+         dev->funcs->buffer_create && dev->funcs->buffer_create_from_handle);
+
+  dev->fd_is_primary = true;
+
+  /* this always succeeds */
+  pthread_mutex_init(&dev->mutex, NULL);
+
+  dev->handle_ref = drmHashCreate();
+
+  if (!dev->handle_ref)
+  {
+    err = ENOMEM;
+    goto out_err;
+  }
+
   /*
    * Render nodes cannot be used for privileged operations.
    * We must always also open the primary DRM device, it is
    * closed on dbm_device_destroy.
    */
-  name = drmGetPrimaryDeviceNameFromFd(fd);
-  dev->drm_fd = open(name, O_RDWR | O_CLOEXEC);
-  if (dev->drm_fd < 0) {
-    errno = dev->drm_fd;
-    goto out_err;
+  if (drmGetNodeTypeFromFd(fd) != DRM_NODE_PRIMARY)
+  {
+    const char *name = drmGetPrimaryDeviceNameFromFd(fd);
+
+    dev->drm_fd = open(name, O_RDWR | O_CLOEXEC);
+
+    if (dev->drm_fd < 0)
+      err = errno;
+    else
+      dev->fd_is_primary = false;
   }
-
-  assert(dev && dev->format_count && dev->formats && dev->funcs &&
-         dev->funcs->destroy && dev->funcs->get_buffer_stride_and_size &&
-         dev->funcs->buffer_create && dev->funcs->buffer_create_from_handle);
-
-  dev->handle_ref = drmHashCreate();
-  err = pthread_mutex_init(&dev->mutex, NULL);
 
 out_err:
   if (err)
   {
-    dev->funcs->destroy(dev);
+    dev->funcs->free(dev);
     errno = err;
     return NULL;
   }
@@ -599,10 +613,15 @@ dbm_device_destroy(dbm_device *dev)
 {
   TRACE("%s\n", __func__);
 
-  close(dev->drm_fd);
+  if (!dev->fd_is_primary)
+    close(dev->drm_fd);
+
+  if (dev->handle_ref)
+    drmHashDestroy(dev->handle_ref);
+
   pthread_mutex_destroy(&dev->mutex);
-  drmHashDestroy(dev->handle_ref);
-  dev->funcs->destroy(dev);
+
+  dev->funcs->free(dev);
 }
 
 int
