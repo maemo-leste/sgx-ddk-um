@@ -330,7 +330,7 @@ dbm_buffer_get_fd(dbm_buffer *buf)
   int prime_fd;
   int fd = get_primary_fd(buf->dev);
 
-  if (drmPrimeHandleToFD(fd, buf->handle, DRM_CLOEXEC, &prime_fd))
+  if (drmPrimeHandleToFD(fd, buf->handle, DRM_CLOEXEC | O_RDWR, &prime_fd))
     prime_fd = -1;
 
   return prime_fd;
